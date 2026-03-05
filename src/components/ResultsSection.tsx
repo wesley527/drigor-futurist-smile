@@ -1,5 +1,5 @@
 import { motion, useInView } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import antes from "@/assets/antes.jpeg";
 import depois from "@/assets/depois.jpeg";
 import protese from "@/assets/protese.jpeg";
@@ -14,6 +14,13 @@ const ResultsSection = () => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
   const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % cases.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <section id="resultados" className="py-24 relative" ref={ref}>
@@ -40,13 +47,18 @@ const ResultsSection = () => {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="max-w-3xl mx-auto"
         >
-          {/* Main image */}
-          <div className="relative rounded-2xl overflow-hidden border border-border glow-gold mb-6">
-            <img
-              src={cases[activeIndex].before}
-              alt={cases[activeIndex].label}
-              className="w-full aspect-video object-cover"
-            />
+          {/* Main image with fade transition */}
+          <div className="relative rounded-2xl overflow-hidden border border-border glow-gold mb-6 aspect-video">
+            {cases.map((c, i) => (
+              <img
+                key={i}
+                src={c.before}
+                alt={c.label}
+                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
+                  i === activeIndex ? "opacity-100" : "opacity-0"
+                }`}
+              />
+            ))}
             <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-background/80 to-transparent p-6">
               <p className="font-display text-lg font-semibold text-primary">
                 {cases[activeIndex].label}
@@ -54,18 +66,16 @@ const ResultsSection = () => {
             </div>
           </div>
 
-          {/* Thumbnails */}
-          <div className="flex gap-3 justify-center">
-            {cases.map((c, i) => (
+          {/* Dots indicator */}
+          <div className="flex gap-2 justify-center">
+            {cases.map((_, i) => (
               <button
                 key={i}
                 onClick={() => setActiveIndex(i)}
-                className={`w-20 h-20 rounded-lg overflow-hidden border-2 transition-all duration-300 ${
-                  i === activeIndex ? "border-primary glow-gold scale-105" : "border-border opacity-50 hover:opacity-80"
+                className={`h-2 rounded-full transition-all duration-500 ${
+                  i === activeIndex ? "w-8 bg-primary" : "w-2 bg-muted-foreground/40 hover:bg-muted-foreground/60"
                 }`}
-              >
-                <img src={c.before} alt={c.label} className="w-full h-full object-cover" />
-              </button>
+              />
             ))}
           </div>
         </motion.div>
