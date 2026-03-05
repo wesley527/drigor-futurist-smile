@@ -30,10 +30,10 @@ const Navbar = () => {
         scrolled ? "bg-background/90 backdrop-blur-xl border-b border-border" : "bg-transparent"
       }`}
     >
-      <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-        <a href="#inicio" className="flex items-center gap-3">
-          <img src={logo} alt="Dr. Igor Mendes" className="h-10 w-10 rounded object-cover" />
-          <span className="font-display text-lg text-gradient-gold font-semibold hidden sm:block">
+      <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
+        <a href="#inicio" className="flex items-center gap-2 sm:gap-3">
+          <img src={logo} alt="Dr. Igor Mendes" className="h-8 w-8 sm:h-10 sm:w-10 rounded object-cover" />
+          <span className="font-display text-sm sm:text-lg text-gradient-gold font-semibold">
             Dr. Igor Mendes
           </span>
         </a>
